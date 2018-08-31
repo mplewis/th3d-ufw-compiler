@@ -1,0 +1,3 @@
+[submodule "TH3D-Marlin"]
+	path = TH3D-Marlin
+	url = https://github.com/houseofbugs/TH3D-Marlin.git
