@@ -13,12 +13,15 @@ COPY cache_helpers/platformio.ini /build
 RUN platformio platform install atmelavr
 RUN platformio lib install 7
 
-# Add TH3D Marlin source
+# Add TH3D Marlin source and runner
 COPY TH3D-Marlin/TH3DUF /build/src
-RUN rm /build/src/Configuration.h
+COPY runtime/compile.sh /build
 
 # First run: installing Arduino framework, caching most built files
 COPY cache_helpers/Configuration.h /build/src
 RUN platformio run
 
-CMD cat .pioenvs/sanguino_atmega1284p/firmware.hex
+# Cleanup files used as params for the real run
+RUN rm /build/src/Configuration.h /build/platformio.ini
+
+CMD /build/compile.sh
