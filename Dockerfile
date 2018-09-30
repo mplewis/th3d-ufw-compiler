@@ -14,7 +14,7 @@ RUN platformio platform install atmelavr
 RUN platformio lib install 7
 
 # Add TH3D Marlin source and runner
-COPY TH3D-Marlin/TH3DUF /build/src
+COPY TH3D-Unified-U1.R2/TH3DUF_R2 /build/src
 COPY runtime/compile.sh /build
 
 # First run: installing Arduino framework, caching most built files
