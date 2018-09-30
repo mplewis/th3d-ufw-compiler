@@ -8,8 +8,10 @@ It's like Marlin with more stuff. Now automated.
 git clone --recurse-submodules -j8 https://github.com/mplewis/th3d-ufw-compiler
 cd th3d-ufw-compiler
 docker build . --tag th3d-ufw-compiler
-docker run --mount type=bind,source=/path/to/your/build_config,target=/config,readonly th3d-ufw-compiler
+docker run --mount type=bind,source=/path/to/your/build_config,target=/config th3d-ufw-compiler
 ```
+
+Note: You can't use `,readonly` for the bind target because the container gives you the compiled firmware by copying it into your mounted directory.
 
 ## Build Config
 
