@@ -7,3 +7,7 @@ cp /config/platformio.ini /build
 cp /config/Configuration.h /build/src
 cd /build
 platformio run
+
+# send the compiled firmware back to the host
+cp .pioenvs/printer/firmware.elf /config
+cp .pioenvs/printer/firmware.hex /config
