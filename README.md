@@ -1,4 +1,4 @@
-# [TH3D Unified Firmware](https://github.com/houseofbugs/TH3D-Marlin) compiler
+# [TH3D Unified Firmware](https://github.com/houseofbugs) compiler
 
 It's like Marlin with more stuff. Now automated.
 
@@ -35,9 +35,9 @@ Example valid `platformio.ini` for a Creality CR-10, which uses the "Sanguino" A
 
 ```
 [platformio]
-env_default = sanguino_atmega1284p
+env_default = printer
 
-[env:sanguino_atmega1284p]
+[env:printer]
 platform = atmelavr
 framework = arduino
 board = sanguino_atmega1284p
