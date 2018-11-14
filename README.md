@@ -30,7 +30,7 @@ Receive a structured response:
 
 ## Build Config
 
-The above `docker run` command exposes the Docker server on local port 8080. When you make a POST request, it must include a JSON body with two values that specify your desired firmware configuration:
+Running './run.sh' exposes the Docker server on local port 8080. When you make a POST request, it must include a JSON body with two values that specify your desired firmware configuration:
 
 ## `config_header`
 
