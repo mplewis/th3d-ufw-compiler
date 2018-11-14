@@ -28,7 +28,7 @@ Receive a structured response:
 { "compiled_hex": ":100000000C9431160C945B160C945B160C945B16D6..." }
 ```
 
-## Build Config
+# Build Config
 
 Running './run.sh' exposes the Docker server on local port 8080. When you make a POST request, it must include a JSON body with two values that specify your desired firmware configuration:
 
