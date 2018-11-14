@@ -24,5 +24,6 @@ RUN platformio run
 RUN rm /build/src/Configuration.h /build/platformio.ini
 
 # Add runner
-COPY runtime/compile.sh /build
-CMD /build/compile.sh
+COPY apisrv/apisrv /build/apisrv
+CMD /build/apisrv
+EXPOSE 8080
