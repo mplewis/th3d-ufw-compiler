@@ -9,6 +9,8 @@ import (
 	"os"
 	"os/exec"
 	"path"
+
+	"./internal/render"
 )
 
 var configHeaderPath = path.Join("/build", "src", "Configuration.h")
@@ -37,54 +39,26 @@ func validateAndParse(raw []byte) (compileRequest, error) {
 	return cr, nil
 }
 
-func renderJSON(w http.ResponseWriter, status int, values interface{}) {
-	json, err := json.Marshal(values)
-	if err != nil {
-		renderServerError(w, err)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
-	w.Write(json)
-}
-
-func renderValidResult(w http.ResponseWriter, values interface{}) {
-	renderJSON(w, http.StatusOK, values)
-}
-
-func renderError(w http.ResponseWriter, status int, e error) {
-	renderJSON(w, status, map[string]string{"error": e.Error()})
-}
-
-func renderClientError(w http.ResponseWriter, e error) {
-	renderError(w, http.StatusBadRequest, e)
-}
-
-func renderServerError(w http.ResponseWriter, e error) {
-	renderError(w, http.StatusInternalServerError, e)
-}
-
 func requestHandler(w http.ResponseWriter, r *http.Request) {
 	data, err := ioutil.ReadAll(r.Body)
 	if err != nil {
-		renderServerError(w, err)
+		render.ServerError(w, err)
 		return
 	}
 
 	cr, err := validateAndParse(data)
 	if err != nil {
-		renderClientError(w, err)
+		render.ClientError(w, err)
 		return
 	}
 
 	hex, err := compile(cr)
 	if err != nil {
-		renderServerError(w, err)
+		render.ServerError(w, err)
 		return
 	}
 
-	renderValidResult(w, map[string]string{"compiled_hex": hex})
+	render.ValidResult(w, map[string]string{"compiled_hex": hex})
 }
 
 func compile(cr compileRequest) (string, error) {
