@@ -3,6 +3,7 @@ package parse_test
 import (
 	"errors"
 	"reflect"
+	"testing"
 
 	"../structs"
 	. "github.com/onsi/ginkgo"
@@ -10,6 +11,11 @@ import (
 
 	. "."
 )
+
+func TestParse(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "Parse Suite")
+}
 
 var _ = Describe("Validate", func() {
 	Context("with valid input data", func() {
