@@ -2,7 +2,9 @@ package render
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"reflect"
 )
 
 func writeJSON(w http.ResponseWriter, status int, values interface{}) {
@@ -18,7 +20,9 @@ func writeJSON(w http.ResponseWriter, status int, values interface{}) {
 }
 
 func writeError(w http.ResponseWriter, status int, e error) {
-	writeJSON(w, status, map[string]string{"error": e.Error()})
+	etype := reflect.TypeOf(e).String()
+	msg := fmt.Sprintf("%s: %s", etype, e.Error())
+	writeJSON(w, status, map[string]string{"error": msg})
 }
 
 // ValidResult renders a valid `values` object as JSON with 200 OK.
