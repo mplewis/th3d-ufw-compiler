@@ -8,7 +8,11 @@ import (
 	"./internal/compile"
 	"./internal/parse"
 	"./internal/render"
+	"./internal/structs"
 )
+
+var requestQueue = make(chan structs.CompileRequest)
+var resultQueue = make(chan structs.CompileResult)
 
 func requestHandler(w http.ResponseWriter, r *http.Request) {
 	data, err := ioutil.ReadAll(r.Body)
@@ -23,16 +27,19 @@ func requestHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	hex, err := compile.Compile(cr)
-	if err != nil {
-		render.ServerError(w, err)
-		return
-	}
+	requestQueue <- cr
+	render.ValidResult(w, map[string]string{"id": cr.ID})
+}
 
-	render.ValidResult(w, map[string]string{"compiled_hex": hex})
+func work() {
+	for {
+		cr := <-requestQueue
+		resultQueue <- compile.Compile(cr)
+	}
 }
 
 func main() {
+	go work()
 	http.HandleFunc("/", requestHandler)
 	log.Print("Server started")
 	log.Fatal(http.ListenAndServe(":8080", nil))

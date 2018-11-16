@@ -14,15 +14,15 @@ var pioConfigPath = path.Join("/build", "platformio.ini")
 var firmwarePath = path.Join("/build", ".pioenvs", "printer", "firmware.hex")
 
 // Compile compiles firmware requested by a CompileRequest.
-func Compile(cr structs.CompileRequest) (string, error) {
+func Compile(cr structs.CompileRequest) structs.CompileResult {
 	err := ioutil.WriteFile(configHeaderPath, []byte(cr.ConfigHeader), 0644)
 	if err != nil {
-		return "", err
+		return structs.NewCompileFailure(cr, err)
 	}
 
 	err = ioutil.WriteFile(pioConfigPath, []byte(cr.PioConfig), 0644)
 	if err != nil {
-		return "", err
+		return structs.NewCompileFailure(cr, err)
 	}
 
 	cmd := exec.Command("platformio", "run")
@@ -31,13 +31,13 @@ func Compile(cr structs.CompileRequest) (string, error) {
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
 	if err != nil {
-		return "", err
+		return structs.NewCompileFailure(cr, err)
 	}
 
 	hex, err := ioutil.ReadFile(firmwarePath)
 	if err != nil {
-		return "", err
+		return structs.NewCompileFailure(cr, err)
 	}
 
-	return string(hex), nil
+	return structs.NewCompileSuccess(cr, string(hex))
 }

@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"../structs"
+	"github.com/google/uuid"
 )
 
 // Validate validates an incoming JSON request body. It returns a CompileRequest on success
@@ -23,5 +24,6 @@ func Validate(raw []byte) (structs.CompileRequest, error) {
 		return cr, errors.New("pio_config must not be empty")
 	}
 
+	cr.ID = uuid.New().String()
 	return cr, nil
 }
