@@ -39,3 +39,8 @@ func ClientError(w http.ResponseWriter, e error) {
 func ServerError(w http.ResponseWriter, e error) {
 	writeError(w, http.StatusInternalServerError, e)
 }
+
+// NotFound renders the message of an `error` as JSON with 404 Not Found.
+func NotFound(w http.ResponseWriter, e error) {
+	writeError(w, http.StatusNotFound, e)
+}
